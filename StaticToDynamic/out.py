@@ -1,0 +1,14 @@
+a = 7
+b = 2
+intDiv = a / b
+half = a / 2.0
+area = 3.14 * (a + b)
+total = a + b * 3
+name = "Ivelin"
+print('a =', a)
+print('b =', b)
+print('intDiv =', intDiv)
+print('half =', half)
+print('area =', area)
+print('total =', total)
+print('name =', name)
