@@ -56,7 +56,7 @@ public class MyVisitor extends StaticToDynamicBaseVisitor<String> {
     public String visitForStmt(StaticToDynamicParser.ForStmtContext ctx) {
         StaticToDynamicParser.ForInitContext init = ctx.forInit();
         StaticToDynamicParser.ExprContext cond = ctx.expr();
-        StaticToDynamicParser.ForUpdateContext upd = ctx.forUpdate();
+        Update upd = parseUpdate(ctx.forUpdate());
 
         if (init != null) {
             loopVars.add(init.ID().getText());
@@ -75,7 +75,7 @@ public class MyVisitor extends StaticToDynamicBaseVisitor<String> {
 
     private String tryRange(StaticToDynamicParser.ForInitContext init,
                             StaticToDynamicParser.ExprContext cond,
-                            StaticToDynamicParser.ForUpdateContext upd,
+                            Update upd,
                             String body) {
         if (init == null || cond == null || upd == null) {
             return null;
@@ -87,8 +87,7 @@ public class MyVisitor extends StaticToDynamicBaseVisitor<String> {
                 (StaticToDynamicParser.CompareContext) cond;
 
         String var = init.ID().getText();
-        String updVar = updateVar(upd);
-        if (updVar == null || !updVar.equals(var)) {
+        if (!upd.var.equals(var)) {
             return null;
         }
         if (!isVar(cmp.expr(0), var)) {
@@ -99,8 +98,8 @@ public class MyVisitor extends StaticToDynamicBaseVisitor<String> {
         String start = visit(init.expr());
         String bound = visit(cmp.expr(1));
 
-        String step = updateStep(upd);
-        int sign = updateSign(upd);
+        String step = upd.step;
+        int sign = upd.sign;
         if (step == null) {
             return null;
         }
@@ -112,7 +111,7 @@ public class MyVisitor extends StaticToDynamicBaseVisitor<String> {
             case "<=": ascending = true;  stop = shift(bound, 1); break;
             case ">":  ascending = false; stop = bound; break;
             case ">=": ascending = false; stop = shift(bound, -1); break;
-            default:   return null; // == / != cannot map to range
+            default:   return null;
         }
         if (ascending && sign != 1) return null;
         if (!ascending && sign != -1) return null;
@@ -133,7 +132,7 @@ public class MyVisitor extends StaticToDynamicBaseVisitor<String> {
 
     private String toWhile(StaticToDynamicParser.ForInitContext init,
                            StaticToDynamicParser.ExprContext cond,
-                           StaticToDynamicParser.ForUpdateContext upd,
+                           Update upd,
                            String body) {
         StringBuilder sb = new StringBuilder();
         if (init != null) {
@@ -144,87 +143,57 @@ public class MyVisitor extends StaticToDynamicBaseVisitor<String> {
         sb.append("while ").append(condText).append(":\n");
 
         String inner = body;
-        String updText = updateToPython(upd);
-        if (updText != null) {
-            inner = inner.isEmpty() ? updText : inner + "\n" + updText;
+        if (upd != null) {
+            inner = inner.isEmpty() ? upd.python : inner + "\n" + upd.python;
         }
         sb.append(indent(inner));
         return sb.toString();
     }
 
-    private String updateVar(StaticToDynamicParser.ForUpdateContext upd) {
-        if (upd instanceof StaticToDynamicParser.PostIncContext)
-            return ((StaticToDynamicParser.PostIncContext) upd).ID().getText();
-        if (upd instanceof StaticToDynamicParser.PostDecContext)
-            return ((StaticToDynamicParser.PostDecContext) upd).ID().getText();
-        if (upd instanceof StaticToDynamicParser.PlusEqContext)
-            return ((StaticToDynamicParser.PlusEqContext) upd).ID().getText();
-        if (upd instanceof StaticToDynamicParser.MinusEqContext)
-            return ((StaticToDynamicParser.MinusEqContext) upd).ID().getText();
-        if (upd instanceof StaticToDynamicParser.UpdateAssignContext)
-            return ((StaticToDynamicParser.UpdateAssignContext) upd).ID().getText();
-        return null;
-    }
-
-    private String updateStep(StaticToDynamicParser.ForUpdateContext upd) {
-        if (upd instanceof StaticToDynamicParser.PostIncContext) return "1";
-        if (upd instanceof StaticToDynamicParser.PostDecContext) return "1";
-        if (upd instanceof StaticToDynamicParser.PlusEqContext)
-            return visit(((StaticToDynamicParser.PlusEqContext) upd).expr());
-        if (upd instanceof StaticToDynamicParser.MinusEqContext)
-            return visit(((StaticToDynamicParser.MinusEqContext) upd).expr());
-        if (upd instanceof StaticToDynamicParser.UpdateAssignContext) {
-            StaticToDynamicParser.UpdateAssignContext ua =
-                    (StaticToDynamicParser.UpdateAssignContext) upd;
-            if (ua.expr() instanceof StaticToDynamicParser.AddSubContext) {
-                StaticToDynamicParser.AddSubContext as =
-                        (StaticToDynamicParser.AddSubContext) ua.expr();
-                if (isVar(as.expr(0), ua.ID().getText())) {
-                    return visit(as.expr(1));
-                }
-            }
-            return null;
+    private static final class Update {
+        final String var, step, python;
+        final int sign;
+        Update(String var, String step, int sign, String python) {
+            this.var = var; this.step = step; this.sign = sign; this.python = python;
         }
-        return null;
     }
 
-    private int updateSign(StaticToDynamicParser.ForUpdateContext upd) {
-        if (upd instanceof StaticToDynamicParser.PostIncContext) return 1;
-        if (upd instanceof StaticToDynamicParser.PostDecContext) return -1;
-        if (upd instanceof StaticToDynamicParser.PlusEqContext) return 1;
-        if (upd instanceof StaticToDynamicParser.MinusEqContext) return -1;
-        if (upd instanceof StaticToDynamicParser.UpdateAssignContext) {
-            StaticToDynamicParser.UpdateAssignContext ua =
-                    (StaticToDynamicParser.UpdateAssignContext) upd;
-            if (ua.expr() instanceof StaticToDynamicParser.AddSubContext) {
-                StaticToDynamicParser.AddSubContext as =
-                        (StaticToDynamicParser.AddSubContext) ua.expr();
-                return as.getChild(1).getText().equals("-") ? -1 : 1;
-            }
-        }
-        return 0;
-    }
-
-    private String updateToPython(StaticToDynamicParser.ForUpdateContext upd) {
+    private Update parseUpdate(StaticToDynamicParser.ForUpdateContext upd) {
         if (upd == null) return null;
-        if (upd instanceof StaticToDynamicParser.PostIncContext)
-            return ((StaticToDynamicParser.PostIncContext) upd).ID().getText() + " += 1";
-        if (upd instanceof StaticToDynamicParser.PostDecContext)
-            return ((StaticToDynamicParser.PostDecContext) upd).ID().getText() + " -= 1";
+        if (upd instanceof StaticToDynamicParser.PostIncContext) {
+            String v = ((StaticToDynamicParser.PostIncContext) upd).ID().getText();
+            return new Update(v, "1", 1, v + " += 1");
+        }
+        if (upd instanceof StaticToDynamicParser.PostDecContext) {
+            String v = ((StaticToDynamicParser.PostDecContext) upd).ID().getText();
+            return new Update(v, "1", -1, v + " -= 1");
+        }
         if (upd instanceof StaticToDynamicParser.PlusEqContext) {
-            StaticToDynamicParser.PlusEqContext p =
-                    (StaticToDynamicParser.PlusEqContext) upd;
-            return p.ID().getText() + " += " + visit(p.expr());
+            StaticToDynamicParser.PlusEqContext p = (StaticToDynamicParser.PlusEqContext) upd;
+            String v = p.ID().getText(), s = visit(p.expr());
+            return new Update(v, s, 1, v + " += " + s);
         }
         if (upd instanceof StaticToDynamicParser.MinusEqContext) {
-            StaticToDynamicParser.MinusEqContext m =
-                    (StaticToDynamicParser.MinusEqContext) upd;
-            return m.ID().getText() + " -= " + visit(m.expr());
+            StaticToDynamicParser.MinusEqContext m = (StaticToDynamicParser.MinusEqContext) upd;
+            String v = m.ID().getText(), s = visit(m.expr());
+            return new Update(v, s, -1, v + " -= " + s);
         }
         if (upd instanceof StaticToDynamicParser.UpdateAssignContext) {
             StaticToDynamicParser.UpdateAssignContext ua =
                     (StaticToDynamicParser.UpdateAssignContext) upd;
-            return ua.ID().getText() + " = " + visit(ua.expr());
+            String v = ua.ID().getText(), rhs = visit(ua.expr());
+            String step = null;
+            int sign = 0;
+
+            if (ua.expr() instanceof StaticToDynamicParser.AddSubContext) {
+                StaticToDynamicParser.AddSubContext as =
+                        (StaticToDynamicParser.AddSubContext) ua.expr();
+                if (isVar(as.expr(0), v)) {
+                    step = visit(as.expr(1));
+                    sign = as.getChild(1).getText().equals("-") ? -1 : 1;
+                }
+            }
+            return new Update(v, step, sign, v + " = " + rhs);
         }
         return null;
     }
