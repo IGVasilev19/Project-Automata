@@ -5,3 +5,27 @@ half = a / 2.0
 area = 3.14 * (a + b)
 total = a + b * 3
 name = "Ivelin"
+square = 0
+scaled = 0
+for i in range(a):
+    square = i * i
+    scaled = a + i * b
+avg = 0.0
+for i in range(1, total + 1, 2):
+    avg = (a + b) / 2.0
+diff = 0
+for i in range(a, 0, -1):
+    diff = total - i
+prod = 0
+i = 0
+while i != b:
+    prod = i * total
+    i += 1
+
+# values after the loops have run
+print("i =", i)
+print("square =", square)
+print("scaled =", scaled)
+print("avg =", avg)
+print("diff =", diff)
+print("prod =", prod)

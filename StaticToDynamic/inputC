@@ -5,3 +5,25 @@ double half = a / 2.0;
 float area = 3.14 * (a + b);
 int total = a + b * 3;
 char name[] = "Ivelin";
+
+int square = 0;
+int scaled = 0;
+for (int i = 0; i < a; i++) {
+    square = i * i;
+    scaled = a + i * b;
+}
+
+double avg = 0.0;
+for (int i = 1; i <= total; i += 2) {
+    avg = (a + b) / 2.0;
+}
+
+int diff = 0;
+for (int i = a; i > 0; i--) {
+    diff = total - i;
+}
+int prod = 0;
+
+for (int i = 0; i != b; i++) {
+    prod = i * total;
+}

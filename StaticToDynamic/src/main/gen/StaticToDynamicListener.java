@@ -1,4 +1,4 @@
-// Generated from D:/Fontys work/Semester 4/Automata/Research/StaticToDynamic/src/main/antlr4/StaticToDynamic.g4 by ANTLR 4.13.2
+// Generated from D:/Fontys work/Semester 4/Automata/Research/Project-Automata/StaticToDynamic/src/main/antlr4/StaticToDynamic.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -41,6 +41,110 @@ public interface StaticToDynamicListener extends ParseTreeListener {
 	 */
 	void exitStringDecl(StaticToDynamicParser.StringDeclContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code forStmt}
+	 * labeled alternative in {@link StaticToDynamicParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterForStmt(StaticToDynamicParser.ForStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code forStmt}
+	 * labeled alternative in {@link StaticToDynamicParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitForStmt(StaticToDynamicParser.ForStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code assignStmt}
+	 * labeled alternative in {@link StaticToDynamicParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignStmt(StaticToDynamicParser.AssignStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code assignStmt}
+	 * labeled alternative in {@link StaticToDynamicParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignStmt(StaticToDynamicParser.AssignStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link StaticToDynamicParser#forInit}.
+	 * @param ctx the parse tree
+	 */
+	void enterForInit(StaticToDynamicParser.ForInitContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StaticToDynamicParser#forInit}.
+	 * @param ctx the parse tree
+	 */
+	void exitForInit(StaticToDynamicParser.ForInitContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code postInc}
+	 * labeled alternative in {@link StaticToDynamicParser#forUpdate}.
+	 * @param ctx the parse tree
+	 */
+	void enterPostInc(StaticToDynamicParser.PostIncContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code postInc}
+	 * labeled alternative in {@link StaticToDynamicParser#forUpdate}.
+	 * @param ctx the parse tree
+	 */
+	void exitPostInc(StaticToDynamicParser.PostIncContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code postDec}
+	 * labeled alternative in {@link StaticToDynamicParser#forUpdate}.
+	 * @param ctx the parse tree
+	 */
+	void enterPostDec(StaticToDynamicParser.PostDecContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code postDec}
+	 * labeled alternative in {@link StaticToDynamicParser#forUpdate}.
+	 * @param ctx the parse tree
+	 */
+	void exitPostDec(StaticToDynamicParser.PostDecContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code plusEq}
+	 * labeled alternative in {@link StaticToDynamicParser#forUpdate}.
+	 * @param ctx the parse tree
+	 */
+	void enterPlusEq(StaticToDynamicParser.PlusEqContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code plusEq}
+	 * labeled alternative in {@link StaticToDynamicParser#forUpdate}.
+	 * @param ctx the parse tree
+	 */
+	void exitPlusEq(StaticToDynamicParser.PlusEqContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code minusEq}
+	 * labeled alternative in {@link StaticToDynamicParser#forUpdate}.
+	 * @param ctx the parse tree
+	 */
+	void enterMinusEq(StaticToDynamicParser.MinusEqContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code minusEq}
+	 * labeled alternative in {@link StaticToDynamicParser#forUpdate}.
+	 * @param ctx the parse tree
+	 */
+	void exitMinusEq(StaticToDynamicParser.MinusEqContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code updateAssign}
+	 * labeled alternative in {@link StaticToDynamicParser#forUpdate}.
+	 * @param ctx the parse tree
+	 */
+	void enterUpdateAssign(StaticToDynamicParser.UpdateAssignContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code updateAssign}
+	 * labeled alternative in {@link StaticToDynamicParser#forUpdate}.
+	 * @param ctx the parse tree
+	 */
+	void exitUpdateAssign(StaticToDynamicParser.UpdateAssignContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link StaticToDynamicParser#block}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlock(StaticToDynamicParser.BlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StaticToDynamicParser#block}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlock(StaticToDynamicParser.BlockContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code parens}
 	 * labeled alternative in {@link StaticToDynamicParser#expr}.
 	 * @param ctx the parse tree
@@ -52,6 +156,18 @@ public interface StaticToDynamicListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParens(StaticToDynamicParser.ParensContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code compare}
+	 * labeled alternative in {@link StaticToDynamicParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterCompare(StaticToDynamicParser.CompareContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code compare}
+	 * labeled alternative in {@link StaticToDynamicParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitCompare(StaticToDynamicParser.CompareContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code floatLit}
 	 * labeled alternative in {@link StaticToDynamicParser#expr}.

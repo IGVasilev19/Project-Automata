@@ -1,4 +1,4 @@
-// Generated from D:/Fontys work/Semester 4/Automata/Research/StaticToDynamic/src/main/antlr4/StaticToDynamic.g4 by ANTLR 4.13.2
+// Generated from D:/Fontys work/Semester 4/Automata/Research/Project-Automata/StaticToDynamic/src/main/antlr4/StaticToDynamic.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -30,12 +30,80 @@ public interface StaticToDynamicVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStringDecl(StaticToDynamicParser.StringDeclContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code forStmt}
+	 * labeled alternative in {@link StaticToDynamicParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForStmt(StaticToDynamicParser.ForStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code assignStmt}
+	 * labeled alternative in {@link StaticToDynamicParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignStmt(StaticToDynamicParser.AssignStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link StaticToDynamicParser#forInit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForInit(StaticToDynamicParser.ForInitContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code postInc}
+	 * labeled alternative in {@link StaticToDynamicParser#forUpdate}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPostInc(StaticToDynamicParser.PostIncContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code postDec}
+	 * labeled alternative in {@link StaticToDynamicParser#forUpdate}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPostDec(StaticToDynamicParser.PostDecContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code plusEq}
+	 * labeled alternative in {@link StaticToDynamicParser#forUpdate}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPlusEq(StaticToDynamicParser.PlusEqContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code minusEq}
+	 * labeled alternative in {@link StaticToDynamicParser#forUpdate}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMinusEq(StaticToDynamicParser.MinusEqContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code updateAssign}
+	 * labeled alternative in {@link StaticToDynamicParser#forUpdate}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUpdateAssign(StaticToDynamicParser.UpdateAssignContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link StaticToDynamicParser#block}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBlock(StaticToDynamicParser.BlockContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code parens}
 	 * labeled alternative in {@link StaticToDynamicParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitParens(StaticToDynamicParser.ParensContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code compare}
+	 * labeled alternative in {@link StaticToDynamicParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCompare(StaticToDynamicParser.CompareContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code floatLit}
 	 * labeled alternative in {@link StaticToDynamicParser#expr}.
