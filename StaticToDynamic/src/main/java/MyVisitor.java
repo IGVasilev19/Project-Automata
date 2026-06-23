@@ -1,10 +1,13 @@
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 public class MyVisitor extends StaticToDynamicBaseVisitor<String> {
 
     private int forDepth = 0;
     private final Set<String> loopVars = new LinkedHashSet<>();
+    private boolean usesDataclass = false;
 
     @Override
     public String visitStart(StaticToDynamicParser.StartContext ctx) {
@@ -20,7 +23,12 @@ public class MyVisitor extends StaticToDynamicBaseVisitor<String> {
                 sb.append("print(\"").append(v).append(" =\", ").append(v).append(")\n");
             }
         }
-        return sb.toString();
+
+        String body = sb.toString();
+        if (usesDataclass) {
+            return "from dataclasses import dataclass\n\n\n" + body;
+        }
+        return body;
     }
 
     private void recordIfInLoop(String name) {
@@ -49,6 +57,49 @@ public class MyVisitor extends StaticToDynamicBaseVisitor<String> {
         String name = ctx.ID().getText();
         recordIfInLoop(name);
         return name + " = " + visit(ctx.expr());
+    }
+
+    @Override
+    public String visitStructDef(StaticToDynamicParser.StructDefContext ctx) {
+        usesDataclass = true;
+        StringBuilder sb = new StringBuilder();
+        sb.append("@dataclass\n");
+        sb.append("class ").append(ctx.ID().getText()).append(":");
+        for (StaticToDynamicParser.StructMemberContext m : ctx.structMember()) {
+            boolean isInt = m.NUMERIC_TYPE().getText().equals("int");
+            sb.append("\n    ").append(m.ID().getText())
+              .append(": ").append(isInt ? "int" : "float")
+              .append(" = ").append(isInt ? "0" : "0.0");
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String visitStructDecl(StaticToDynamicParser.StructDeclContext ctx) {
+        String type = ctx.ID(0).getText();
+        String var = ctx.ID(1).getText();
+        recordIfInLoop(var);
+
+        List<String> args = new ArrayList<>();
+        StaticToDynamicParser.ArgListContext al = ctx.argList();
+        if (al != null) {
+            for (StaticToDynamicParser.ExprContext e : al.expr()) {
+                args.add(visit(e));
+            }
+        }
+        return var + " = " + type + "(" + String.join(", ", args) + ")";
+    }
+
+    @Override
+    public String visitMemberAssign(StaticToDynamicParser.MemberAssignContext ctx) {
+        String obj = ctx.ID(0).getText();
+        recordIfInLoop(obj);
+        return obj + "." + ctx.ID(1).getText() + " = " + visit(ctx.expr());
+    }
+
+    @Override
+    public String visitMemberRef(StaticToDynamicParser.MemberRefContext ctx) {
+        return visit(ctx.expr()) + "." + ctx.ID().getText();
     }
 
 

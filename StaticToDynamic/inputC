@@ -27,3 +27,12 @@ int prod = 0;
 for (int i = 0; i != b; i++) {
     prod = i * total;
 }
+
+struct Point { int x; int y; };
+struct Point p = {1, 2};
+p.x = a + b;
+int px = p.x * p.y;
+
+struct Vec { double dx; double dy; };
+struct Vec v = {1.5, 2.0};
+double mag = v.dx * v.dx + v.dy * v.dy;

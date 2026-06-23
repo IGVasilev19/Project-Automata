@@ -1,4 +1,4 @@
-// Generated from src/main/antlr4/StaticToDynamic.g4 by ANTLR 4.13.2
+// Generated from /home/markov/Desktop/projects/github/Project-Automata/StaticToDynamic/src/main/antlr4/StaticToDynamic.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**

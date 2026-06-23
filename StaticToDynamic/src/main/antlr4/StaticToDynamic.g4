@@ -4,10 +4,21 @@ grammar StaticToDynamic;
 start : statement* EOF ;
 
 statement
-    : NUMERIC_TYPE ID '=' expr ';'                       #numericDecl
+    : 'struct' ID '{' structMember+ '}' ';'              #structDef
+    | 'struct' ID ID ('=' '{' argList? '}')? ';'         #structDecl
+    | NUMERIC_TYPE ID '=' expr ';'                       #numericDecl
     | STRING_TYPE ID '[' INTEGER? ']' '=' STRING ';'     #stringDecl
     | 'for' '(' forInit? ';' expr? ';' forUpdate? ')' block   #forStmt
+    | ID '.' ID '=' expr ';'                             #memberAssign
     | NUMERIC_TYPE? ID '=' expr ';'                      #assignStmt
+    ;
+
+structMember
+    : NUMERIC_TYPE ID ';'
+    ;
+
+argList
+    : expr (',' expr)*
     ;
 
 forInit
@@ -28,7 +39,8 @@ block
     ;
 
 expr
-    : expr ('*' | '/') expr                             #mulDiv
+    : expr '.' ID                                       #memberRef
+    | expr ('*' | '/') expr                             #mulDiv
     | expr ('+' | '-') expr                             #addSub
     | expr ('<' | '<=' | '>' | '>=' | '==' | '!=') expr #compare
     | '(' expr ')'                                      #parens

@@ -1,3 +1,6 @@
+from dataclasses import dataclass
+
+
 a = 7
 b = 2
 intDiv = a / b
@@ -21,6 +24,19 @@ i = 0
 while i != b:
     prod = i * total
     i += 1
+@dataclass
+class Point:
+    x: int = 0
+    y: int = 0
+p = Point(1, 2)
+p.x = a + b
+px = p.x * p.y
+@dataclass
+class Vec:
+    dx: float = 0.0
+    dy: float = 0.0
+v = Vec(1.5, 2.0)
+mag = v.dx * v.dx + v.dy * v.dy
 
 # values after the loops have run
 print("i =", i)

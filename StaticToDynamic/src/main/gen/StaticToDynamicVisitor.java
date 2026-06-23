@@ -1,4 +1,4 @@
-// Generated from D:/Fontys work/Semester 4/Automata/Research/Project-Automata/StaticToDynamic/src/main/antlr4/StaticToDynamic.g4 by ANTLR 4.13.2
+// Generated from src/main/antlr4/StaticToDynamic.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -15,6 +15,20 @@ public interface StaticToDynamicVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStart(StaticToDynamicParser.StartContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code structDef}
+	 * labeled alternative in {@link StaticToDynamicParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStructDef(StaticToDynamicParser.StructDefContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code structDecl}
+	 * labeled alternative in {@link StaticToDynamicParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStructDecl(StaticToDynamicParser.StructDeclContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code numericDecl}
 	 * labeled alternative in {@link StaticToDynamicParser#statement}.
@@ -37,12 +51,31 @@ public interface StaticToDynamicVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitForStmt(StaticToDynamicParser.ForStmtContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code memberAssign}
+	 * labeled alternative in {@link StaticToDynamicParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMemberAssign(StaticToDynamicParser.MemberAssignContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code assignStmt}
 	 * labeled alternative in {@link StaticToDynamicParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitAssignStmt(StaticToDynamicParser.AssignStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link StaticToDynamicParser#structMember}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStructMember(StaticToDynamicParser.StructMemberContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link StaticToDynamicParser#argList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArgList(StaticToDynamicParser.ArgListContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link StaticToDynamicParser#forInit}.
 	 * @param ctx the parse tree
@@ -118,6 +151,13 @@ public interface StaticToDynamicVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIntLit(StaticToDynamicParser.IntLitContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code memberRef}
+	 * labeled alternative in {@link StaticToDynamicParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMemberRef(StaticToDynamicParser.MemberRefContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code addSub}
 	 * labeled alternative in {@link StaticToDynamicParser#expr}.
